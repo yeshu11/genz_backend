@@ -1,0 +1,2 @@
+class DeletedJobsController < ApplicationController
+end
