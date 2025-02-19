@@ -25,10 +25,14 @@ class Admin::JobsController < ApplicationController
     render json: { message: "Job deleted successfully" }, status: :ok
   end
 
+  def show
+    @job = Job.find(params[:id])
+    render json: @job
+  end
+
   private
 
   def job_params
-    # Removed :image from the permitted params
     params.require(:job).permit(:title, :description, :location, :job_type, :status)
   end
 end
