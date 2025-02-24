@@ -1,38 +1,44 @@
 class Admin::JobsController < ApplicationController
+  before_action :set_job, only: [:update, :destroy, :show]
+
   def create
     @job = Job.new(job_params)
 
     if @job.save
       render json: @job, status: :created
     else
-      render json: @job.errors, status: :unprocessable_entity
+      render json: { errors: @job.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def update
-    @job = Job.find(params[:id])
-
     if @job.update(job_params)
       render json: @job, status: :ok
     else
-      render json: @job.errors, status: :unprocessable_entity
+      render json: { errors: @job.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @job = Job.find(params[:id])
-    @job.destroy
-    render json: { message: "Job deleted successfully" }, status: :ok
+    if @job.destroy
+      render json: { message: "Job deleted successfully" }, status: :ok
+    else
+      render json: { error: "Failed to delete job" }, status: :unprocessable_entity
+    end
   end
 
   def show
-    @job = Job.find(params[:id])
     render json: @job
   end
 
   private
 
+  def set_job
+    @job = Job.find_by(id: params[:id])
+    return render json: { error: "Job not found" }, status: :not_found unless @job
+  end
+
   def job_params
-    params.require(:job).permit(:title, :description, :location, :job_type, :status)
+    params.require(:job).permit(:title, :description, :location, :job_type, :status, :company_name, :salary, :job_image)
   end
 end

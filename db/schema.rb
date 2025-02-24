@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_18_081838) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_19_154716) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -76,7 +76,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_081838) do
     t.string "name"
     t.string "email"
     t.string "role"
-    t.string "resume_file"
     t.integer "job_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
