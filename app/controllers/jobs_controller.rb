@@ -30,18 +30,22 @@ class JobsController < ApplicationController
   def destroy
     job = Job.find(params[:id])
 
-    # Move job to deleted_jobs before destroying it
-    deleted_job = DeletedJob.create!(
-      title: job.title,
-      location: job.location,
-      description: job.description,
-      job_type: job.job_type,
-      status: job.status,
-      image: job.image
-    )
+    # Check if job is already in deleted_jobs
+    existing_deleted_job = DeletedJob.find_by(title: job.title, location: job.location, description: job.description)
 
-    # Assign deleted_job_id to resumes before deletion
-    job.resumes.update_all(deleted_job_id: deleted_job.id, job_id: nil)
+    unless existing_deleted_job
+      deleted_job = DeletedJob.create!(
+        title: job.title,
+        location: job.location,
+        description: job.description,
+        job_type: job.job_type,
+        status: job.status,
+        image: job.image
+      )
+
+      # Move resumes to deleted_job
+      job.resumes.update_all(deleted_job_id: deleted_job.id, job_id: nil)
+    end
 
     job.destroy
     render json: { message: "Job deleted and archived successfully" }, status: :ok
@@ -50,6 +54,6 @@ class JobsController < ApplicationController
   private
 
   def job_params
-    params.require(:job).permit(:title, :status, :description, :image)
+    params.require(:job).permit(:title, :status, :description, :image, :location, :job_type)
   end
 end

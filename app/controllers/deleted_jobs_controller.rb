@@ -1,7 +1,6 @@
 class DeletedJobsController < ApplicationController
   def index
-    # Fetch all deleted jobs and filter unique ones by title
-    deleted_jobs = DeletedJob.all.uniq { |job| job.title }.map do |deleted_job|
+    deleted_jobs = DeletedJob.all.map do |deleted_job|
       {
         id: deleted_job.id,
         title: deleted_job.title,
@@ -31,7 +30,6 @@ class DeletedJobsController < ApplicationController
       Resume.where(deleted_job_id: deleted_job.id).destroy_all
       deleted_job.destroy
 
-      # Ensure job is removed from frontend
       render json: { message: "Job permanently deleted", id: params[:id] }, status: :ok
     else
       render json: { error: "Job not found" }, status: :not_found
@@ -42,7 +40,7 @@ class DeletedJobsController < ApplicationController
     deleted_job = DeletedJob.find_by(id: params[:id])
 
     if deleted_job
-      restored_job = Job.create(
+      restored_job = Job.create!(
         title: deleted_job.title,
         location: deleted_job.location,
         description: deleted_job.description,
@@ -55,7 +53,6 @@ class DeletedJobsController < ApplicationController
 
       deleted_job.destroy
 
-      # Ensure job is removed from deleted jobs section after restore
       render json: { message: "Job restored successfully", id: params[:id] }, status: :ok
     else
       render json: { error: "Job not found" }, status: :not_found
