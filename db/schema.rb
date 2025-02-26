@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_19_154716) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_26_061322) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -46,9 +46,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_19_154716) do
   end
 
   create_table "deleted_jobs", force: :cascade do |t|
-    t.integer "job_id", null: false
+    t.integer "job_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title"
+    t.string "location"
+    t.text "description"
+    t.string "job_type"
+    t.string "status"
+    t.string "image"
     t.index ["job_id"], name: "index_deleted_jobs_on_job_id"
   end
 
@@ -76,15 +82,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_19_154716) do
     t.string "name"
     t.string "email"
     t.string "role"
-    t.integer "job_id", null: false
+    t.integer "job_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "deleted_job_id"
     t.index ["job_id"], name: "index_resumes_on_job_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "deleted_jobs", "jobs"
+  add_foreign_key "deleted_jobs", "jobs", on_delete: :nullify
   add_foreign_key "resume_categories", "categories"
   add_foreign_key "resume_categories", "resumes"
   add_foreign_key "resumes", "jobs"

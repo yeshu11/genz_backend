@@ -22,7 +22,9 @@ class ResumesController < ApplicationController
   end
 
   def index
-    resumes = Resume.includes(:job).map do |resume|
+    resumes = Resume.includes(:job)
+                    .where.not(job_id: nil)  # Exclude resumes where job_id is NULL (deleted jobs)
+                    .map do |resume|
       {
         id: resume.id,
         name: resume.name,
@@ -34,6 +36,8 @@ class ResumesController < ApplicationController
 
     render json: resumes
   end
+
+
 
   private
 

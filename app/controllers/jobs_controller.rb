@@ -6,15 +6,7 @@ class JobsController < ApplicationController
 
   def show
     @job = Job.find(params[:id])
-    
-    # Check if the request is coming from the admin view
-    if request.path.include?("/admin")
-      # For admin, only render job details without resumes
-      render json: @job
-    else
-      # For careers, render job details and include resume submission form
-      render json: @job
-    end
+    render json: @job
   end
 
   def create
@@ -36,9 +28,23 @@ class JobsController < ApplicationController
   end
 
   def destroy
-    @job = Job.find(params[:id])
-    @job.destroy
-    render json: { message: "Job deleted successfully" }
+    job = Job.find(params[:id])
+
+    # Move job to deleted_jobs before destroying it
+    deleted_job = DeletedJob.create!(
+      title: job.title,
+      location: job.location,
+      description: job.description,
+      job_type: job.job_type,
+      status: job.status,
+      image: job.image
+    )
+
+    # Assign deleted_job_id to resumes before deletion
+    job.resumes.update_all(deleted_job_id: deleted_job.id, job_id: nil)
+
+    job.destroy
+    render json: { message: "Job deleted and archived successfully" }, status: :ok
   end
 
   private
