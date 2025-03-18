@@ -17,7 +17,10 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    root to: "admin_sessions#new"  # ✅ Redirect /admin to login form
     resources :jobs, only: [:create, :update, :destroy, :show]
+    post "/login", to: "admin_sessions#create"
+    delete "/logout", to: "admin_sessions#destroy"
   end
 
   # ✅ Super Admin Routes
@@ -29,6 +32,9 @@ Rails.application.routes.draw do
         post :restore  # ✅ Allow Super Admin to restore deleted jobs
       end
     end
+
+    # ✅ Super Admin can create Admins
+    post "/admins", to: "admins#create"
   end
 
   get '/careers', to: 'jobs#index'
