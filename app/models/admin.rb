@@ -1,6 +1,6 @@
-class ::Admin < ApplicationRecord  # 👈 Force Rails to treat this as a model
-  has_secure_password
-
-  validates :name, :email, :phone, presence: true
-  validates :email, uniqueness: true
+class Admin < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
 end

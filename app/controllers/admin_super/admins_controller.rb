@@ -1,4 +1,4 @@
-class SuperAdmin::AdminsController < ApplicationController
+class AdminSuper::AdminsController < ApplicationController
   def create
     admin = Admin.new(admin_params)
     if admin.save

@@ -1,4 +1,4 @@
-class SuperAdmin::DeletedJobsController < ApplicationController
+class AdminSuper::DeletedJobsController < ApplicationController
   def index
     deleted_jobs = DeletedJob.all.map do |deleted_job|
       {
