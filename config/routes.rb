@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  get "/", to: ->(env) { [200, {"Content-Type" => "application/json"}, [{status: "OK"}.to_json]] }
+  get '/', to: 'application#healthcheck'
   
   # ✅ Devise authentication for Admins
   devise_for :admins, controllers: {
