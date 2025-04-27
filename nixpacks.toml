@@ -1,0 +1,9 @@
+[phases.setup]
+nixPkgs = ['ruby_3_3', 'nodejs_20']
+aptPkgs = ['build-essential', 'sqlite3', 'libsqlite3-dev']
+
+[phases.build]
+cmds = ['bundle install']
+
+[phases.start]
+cmd = 'bundle exec rails server -b 0.0.0.0 -p $PORT -e production'
