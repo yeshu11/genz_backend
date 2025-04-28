@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-
-  get '/', to: 'application#healthcheck'
   
   # ✅ Devise authentication for Admins
   devise_for :admins, controllers: {
