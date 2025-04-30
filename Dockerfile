@@ -5,8 +5,6 @@
 # docker build -t myapp .
 # docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name myapp myapp
 
-# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
-
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.2.2
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
@@ -16,7 +14,7 @@ WORKDIR /rails
 
 # Install base packages
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 && \
+    apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment
@@ -28,7 +26,7 @@ ENV RAILS_ENV="production" \
 # Throw-away build stage to reduce size of final image
 FROM base AS build
 
-# Install packages needed to build gems, including libpq-dev for pg gem
+# Install packages needed to build gems
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git pkg-config libpq-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
@@ -36,14 +34,16 @@ RUN apt-get update -qq && \
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 
 # Copy application code
 COPY . .
 
-# Precompile bootsnap code for faster boot times
+# Precompile bootsnap code for faster boot times (single step)
 RUN bundle exec bootsnap precompile app/ lib/
+
+# Precompile assets (if applicable)
+RUN bundle exec rails assets:precompile
 
 # Final stage for app image
 FROM base
@@ -58,7 +58,7 @@ RUN groupadd --system --gid 1000 rails && \
     chown -R rails:rails db log storage tmp
 USER 1000:1000
 
-# Entrypoint prepares the database.
+# Entrypoint prepares the database
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start server via Thruster by default, this can be overwritten at runtime
