@@ -64,3 +64,5 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 # Start server via Thruster by default, this can be overwritten at runtime
 EXPOSE 80
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "80"]
+RAILS_MASTER_KEY=abf7c3b4d3173523e36d1ebe0ccff5af
+SECRET_KEY_BASE=a6683676acdb8432ff6528cb3094ee1b417d076349fd44d02ff0aea28c5fa6692a5013b2be0229dd2ebc03b4c56de67ac9b029a4781ee9e703444cfe63e000e7

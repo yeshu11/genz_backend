@@ -2,8 +2,8 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: ENV["DATABASE_USERNAME"]
-  password: ENV["PASSWORD"]
+  username: <%= ENV["DATABASE_USERNAME"] %>
+  password: <%= ENV["PASSWORD"] %>
   host: localhost
 
 development:
@@ -17,6 +17,7 @@ test:
 production:
   <<: *default
   database: genz_backend_app_production
+  
 
 
 
