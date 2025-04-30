@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 8.0.1"
-gem "pg", "~> 1.5"
+gem 'pg', '~> 1.5.6'
 gem "puma", ">= 5.0"
 gem "rack-cors"
 gem "activestorage"
