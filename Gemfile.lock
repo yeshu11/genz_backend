@@ -352,7 +352,11 @@ DEPENDENCIES
   dotenv-rails
   jwt (~> 2.10)
   kamal
+<<<<<<< Updated upstream
   pg (~> 1.5.6)
+=======
+  pg (~> 1.5)
+>>>>>>> Stashed changes
   pry
   puma (>= 5.0)
   rack-cors
