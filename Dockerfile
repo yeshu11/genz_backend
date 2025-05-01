@@ -5,6 +5,8 @@
 # docker build -t myapp .
 # docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name myapp myapp
 
+# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
+
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.2.2
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
@@ -39,13 +41,10 @@ RUN bundle install && \
 # Copy application code
 COPY . .
 
-# Precompile bootsnap code for faster boot times (single step)
+# Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
-# Precompile assets (if applicable)
-RUN bundle exec rails assets:precompile
-
-# Final stage for app image
+# Final stage for app image (no assets:precompile)
 FROM base
 
 # Copy built artifacts: gems, application
@@ -61,8 +60,6 @@ USER 1000:1000
 # Entrypoint prepares the database
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-# Start server via Thruster by default, this can be overwritten at runtime
+# Start server directly (bypassing thruster for now to isolate issues)
 EXPOSE 80
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "80"]
-RAILS_MASTER_KEY=abf7c3b4d3173523e36d1ebe0ccff5af
-SECRET_KEY_BASE=a6683676acdb8432ff6528cb3094ee1b417d076349fd44d02ff0aea28c5fa6692a5013b2be0229dd2ebc03b4c56de67ac9b029a4781ee9e703444cfe63e000e7
