@@ -2,100 +2,24 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV["DATABASE_USERNAME"] %>
-  password: <%= ENV["PASSWORD"] %>
-  host: localhost
 
 development:
   <<: *default
   database: genz_backend_app_development
+  host: localhost
+  username: postgres
+  password: password
 
 test:
   <<: *default
   database: genz_backend_app_test
+  host: localhost
+  username: postgres
+  password: password
 
 production:
   <<: *default
-  database: genz_backend_app_production
   url: <%= ENV["DATABASE_URL"] %>
   cable:
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# # SQLite. Versions 3.8.0 and up are supported.
-# #   gem install sqlite3
-# #
-# #   Ensure the SQLite 3 gem is defined in your Gemfile
-# #   gem "sqlite3"
-# #
-# default: &default
-#   adapter: sqlite3
-#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-#   timeout: 5000
-
-# development:
-#   primary:
-#     <<: *default
-#     database: storage/development.sqlite3
-#   cache:
-#     <<: *default
-#     database: storage/development_cache.sqlite3
-#     migrations_paths: db/cache_migrate
-#   queue:
-#     <<: *default
-#     database: storage/development_queue.sqlite3
-#     migrations_paths: db/queue_migrate
-#   cable:
-#     <<: *default
-#     database: storage/development_cable.sqlite3
-#     migrations_paths: db/cable_migrate
-
-# # Warning: The database defined as "test" will be erased and
-# # re-generated from your development database when you run "rake".
-# # Do not set this db to the same as development or production.
-# test:
-#   <<: *default
-#   database: storage/test.sqlite3
-
-
-# # Store production database in the storage/ directory, which by default
-# # is mounted as a persistent Docker volume in config/deploy.yml.
-# production:
-#   primary:
-#     <<: *default
-#     database: /app/storage/production.sqlite3
-#   cache:
-#     <<: *default
-#     database: /app/storage/production_cache.sqlite3
-#     migrations_paths: db/cache_migrate
-#   queue:
-#     <<: *default
-#     database: /app/storage/production_queue.sqlite3
-#     migrations_paths: db/queue_migrate
-#   cable:
-#     <<: *default
-#     database: /app/storage/production_cable.sqlite3
-#     migrations_paths: db/cable_migrate
