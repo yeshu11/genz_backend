@@ -5,23 +5,15 @@ default: &default
 
 development:
   <<: *default
-  database: genz_backend_app_development
-  host: localhost
-  username: postgres
-  password: password
+  database: myapp_development
 
 test:
   <<: *default
-  database: genz_backend_app_test
-  host: localhost
-  username: postgres
-  password: password
+  database: myapp_test
 
 production:
   <<: *default
   url: <%= ENV["DATABASE_URL"] %>
-  adapter: postgresql
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   cable:
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
