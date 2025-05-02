@@ -66,5 +66,6 @@ Rails.application.routes.draw do
 
   # ✅ Careers Page
   get '/careers', to: 'jobs#index'
+  
   get '/health', to: 'health#index'
 end
