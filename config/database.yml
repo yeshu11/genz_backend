@@ -18,7 +18,9 @@ production:
   <<: *default
   database: genz_backend_app_production
   url: <%= ENV["DATABASE_URL"] %>
-  
+  cable:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
 
 
 
