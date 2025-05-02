@@ -59,7 +59,7 @@ USER 1000:1000
 
 # Entrypoint prepares the database
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
-
+RUN rails db:migrate RAILS_ENV=production
 # Start server directly (bypassing thruster for now to isolate issues)
 EXPOSE 80
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "80"]
