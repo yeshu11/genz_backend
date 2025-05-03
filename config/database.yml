@@ -15,16 +15,5 @@ production:
   <<: *default
   url: <%= ENV["DATABASE_PUBLIC_URL"] %>
 
-cable:
-  <<: *default
-  url: <%= ENV["DATABASE_PUBLIC_URL"] %>
 
-
-queue:
-  <<: *default
-  url: <%= ENV["DATABASE_PUBLIC_URL"] %>
-
-cache:
-  <<: *default
-  url: <%= ENV["DATABASE_PUBLIC_URL"] %>
 
