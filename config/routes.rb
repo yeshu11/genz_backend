@@ -70,7 +70,4 @@ Rails.application.routes.draw do
   # get '/careers', to: 'jobs#index'
   
   get '/health', to: 'health#index'
-
-  # Temporary redirect for 404 fix
-  get '/admin_supers/sign_in', to: redirect('/admin_super/sign_in')
 end
