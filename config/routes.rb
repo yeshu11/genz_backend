@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+  root to: "jobs#index"  # Redirect to careers page
   
   # ✅ Devise authentication for Admins
   devise_for :admins, controllers: {
