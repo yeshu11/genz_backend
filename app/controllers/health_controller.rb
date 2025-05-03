@@ -1,5 +1,5 @@
 class HealthController < ApplicationController
   def index
-    render plain: "OK", status: :OK
+    render plain: "ok", status: :ok
   end
 end
