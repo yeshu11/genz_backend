@@ -1,6 +1,6 @@
 class AdminSuper::JobsController < ApplicationController
   before_action :set_job, only: [:show, :update, :destroy]
-  before_action :authenticate_admin_super!
+  # before_action :authenticate_admin_super!
 
   # GET /super_admin/jobs
   def index
