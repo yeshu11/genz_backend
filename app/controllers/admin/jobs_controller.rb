@@ -1,6 +1,6 @@
 class Admin::JobsController < ApplicationController
   before_action :set_job, only: [:update, :destroy, :show]
-  before_action :authenticate_admin!
+  # before_action :authenticate_admin!
 
   def create
     @job = Job.new(job_params)
